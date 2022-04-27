@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% block content %}
+    <div class="row">
+        <h1>Passagem de Plantão</h1>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Tipo</th>
+                    <th scope="col">Data</th>
+                    <th scope="col">Ação</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for passagem in page_obj %}
+                    <tr>
+                        <td>{{ passagem.id }}</td>
+                        <td>{{ passagem.descricao }}</td>
+                        <td>{{ passagem.data }}</td>
+                        
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% include 'paginacao.html' %}
+        
+        <div>
+            <a class="btn btn-primary" href="{% url 'add_passagem_plantao' %}">Cadastrar a passagem de plantão</a>
+        </div>
+
+    </div>
+    {% bootstrap_javascript jquery='full' %}
+{% endblock %}

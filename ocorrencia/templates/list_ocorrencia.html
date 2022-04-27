@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% block content %}
+    <div class="row">
+        <h1>Ocorrências</h1>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Tipo</th>
+                    <th scope="col">Descrição</th>
+                    <th scope="col">Data</th>
+                    <th scope="col">Ação</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for ocorrencia in page_obj %}
+                    <tr>
+                        <a href="{% url 'det_ocorrencia' ocorrencia.id %}" ></a>
+                        <td>{{ ocorrencia.id }}</td>
+                        <td>{{ ocorrencia.tipo }}</td>
+                        <td>{{ ocorrencia.descricao }}</td>
+                        <td>{{ ocorrencia.data }}</td>
+                        <td>
+                            <a class="btn btn-success" href="{% url 'det_ocorrencia' ocorrencia.id %}">Ver</a>
+                            <a class="btn btn-primary" href="{% url 'upd_ocorrencia' ocorrencia.id %}">Editar</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% include 'paginacao.html' %}
+
+    </div>
+    {% bootstrap_javascript jquery='full' %}
+{% endblock %}

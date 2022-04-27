@@ -1,0 +1,83 @@
+import uuid
+from django.db import models
+from stdimage.models import StdImageField
+
+class Base(models.Model):
+    criado = models.DateField('Data de criação', auto_now_add=True)
+    modificado = models.DateField('Data de atualização', auto_now=True)
+
+    class Meta:
+        abstract = True
+
+def get_file_path(_instance, filename):
+    ext = filename.split('.')[-1]
+    filename = f'{uuid.uuid4()}.{ext}'
+    return filename
+
+class Ocorrencia(Base):
+    CENTRO_CHOICES = (
+        ('Almoxarifa-do-central', 'Almoxarifado Central'),
+        ('Arquealogia', 'Arquealogia'),
+        ('Apoio-pista-de-cooper', 'Apaio Pista de Cooper'),
+        ('Biblioteca-central', 'Biblioteca Central'),
+        ('Bloco-compartilhado-ccb', 'Bloco CoSSmpartilhado-CCB'),
+        ('Bloco-compartilhados-outros', 'Bloco Compartilhado-CFCH/CE/CCSA'),
+    )
+
+    TIPO_OCORRENCIA_CHOICES = (
+        ('Agressao', 'Agressão'),
+        ('Roubo', 'Roubo'),
+        ('Furto', 'Furto'),
+    )
+
+    TIPO_ENVOLVIDO_CHOICES = (
+        ('Suspeito', 'Suspeito'),
+        ('Vitima', 'Vitima'),
+    )
+
+    TIPO_GENERO_CHOICES = (
+        ('Feminino', 'Feminino'),
+        ('Masculino', 'Masculino'),
+        ('Outros', 'Outros'),
+    )
+
+    '''
+    TIPO_OBJETO_CHOICES = (
+        ('Feminino', 'Feminino'),
+        ('Masculino', 'Masculino'),
+        ('Outros', 'Outros'),
+    )'''
+
+    coordenadaX = models.CharField('Coordenadas X', max_length=255)
+    coordenadaY = models.CharField('Coordenadas Y', max_length=255)
+    centro = models.CharField('Centro', max_length=255, choices=CENTRO_CHOICES)
+    referencia = models.CharField('Local de referência', max_length=255, null=True)
+    data = models.DateTimeField('Data e hora', auto_now_add=False, auto_now=False)
+    tipo = models.CharField('Tipo da ocorrência', max_length=255, choices=TIPO_OCORRENCIA_CHOICES)
+    descricao = models.TextField('Descrição da ocorrência', max_length=255, null=True)
+    envolvidoNome = models.CharField('Nome do envolvido', max_length=100, null=True, blank=True)
+    tipoEnvolvido = models.CharField('Tipo do envolvido', max_length=255, choices=TIPO_ENVOLVIDO_CHOICES, null=True, blank=True)
+    genero = models.CharField('Gênero do envolvido', max_length=255, choices=TIPO_GENERO_CHOICES, null=True, blank=True)
+    cpf = models.IntegerField('CPF do envolvido', null=True, blank=True)
+    email = models.EmailField('Email do envolvido', max_length=100, null=True, blank=True)
+    fone = models.CharField('Telefone do envolvido', max_length=14, null=True, blank=True)
+    imagem = StdImageField('Imagem', upload_to=get_file_path, null=True, blank=True)
+
+    class Meta:
+        verbose_name = 'Ocorrência'
+        verbose_name_plural = 'Ocorrências'
+
+    def __str__(self):
+        return self.tipo
+
+class PassagemPlatao(Base):
+    data = models.DateTimeField('Data e hora', auto_now_add=False, auto_now=False)
+    descricao = models.TextField('Descrição da plantão', max_length=255, null=True)
+
+
+    class Meta:
+        verbose_name = 'Passagem de Plantão'
+        verbose_name_plural = 'Passagens de Plantão'
+
+    def __str__(self):
+        return self.data

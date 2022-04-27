@@ -1,0 +1,45 @@
+{% load bootstrap4 %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    {% bootstrap_css %}
+    <title>Ocorrencias</title>
+</head>
+<body>
+    <div class=".container">
+        <div style="background-color: brown; height: 5rem; align-items: center;" class="row justify-content-center">
+            <ul class="nav justify-content-center">
+                <li class="nav-item">
+                  <a style="color: white;" class="nav-link active" aria-current="page" href="{% url 'list_ocorrencia' %}">Ocorrencia</a>
+                </li>
+                <li class="nav-item">
+                  <a style="color: white;" class="nav-link" href="#">Usuário</a>
+                </li>
+                <li class="nav-item">
+                  <a style="color: white;" class="nav-link" href="#">Relatório</a>
+                </li>
+                <li class="nav-item">
+                    <a class="btn btn-primary" href="{% url 'add_ocorrencia' %}">Cadastrar nova ocorrência</a>
+                </li>
+                <li class="nav-item">
+                    <a style="color: white;" class="nav-link" href="#">Estátistica</a>
+                </li>
+                <li class="nav-item">
+                    <a style="color: white;" class="nav-link" href="{% url 'list_passagem_plantao' %}">Passagem de Plantão</a>
+                </li>
+                <li class="nav-item">
+                    <a style="color: white;" class="nav-link" href="#">Configuração</a>
+                </li>
+              </ul>
+        </div>
+    </div>
+
+
+    <div class="container">
+        {%  block content %} {% endblock %}
+    </div>
+{% bootstrap_javascript jquery='full' %}
+</body>
+</html> 
