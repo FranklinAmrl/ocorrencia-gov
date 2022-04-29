@@ -1,12 +1,16 @@
 from ast import Pass
 from django.views.generic import ListView
 from django.views.generic import TemplateView
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from django.views.generic.detail import DetailView
+from django.views.generic.edit import CreateView, UpdateView
+
+from django.views import generic
+
 from django.urls import reverse_lazy
 
+from django.contrib.auth import get_user_model
 
-from .models import Ocorrencia, PassagemPlatao
+
+from .models import CustomUsuario, Ocorrencia, PassagemPlatao
 
 
 class ListOcorrenciaView(ListView):
@@ -32,7 +36,7 @@ class UpdateOcorrenciaView(UpdateView):
 
 class DetailOcorrenciaView(TemplateView):
     model = Ocorrencia
-    template_name = 'ocorrencia.html'
+    template_name = 'ver_ocorrencia.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -50,6 +54,14 @@ class ListPassagemPlantaoView(ListView):
 
 class CreatePassagemPlantaoView(CreateView):
     model = PassagemPlatao
-    template_name = 'passagem_plantao_form.html'
+    template_name = 'passagem_plantao_forms.html'
     fields = '__all__'
     success_url = reverse_lazy('list_passagem_plantao')
+
+class ListCustomUsuarioView(ListView):
+    model = CustomUsuario
+    template_name = 'list_usuario.html'
+    paginate_by = 10
+    ordering = ['data']
+    queryset = CustomUsuario.objects.all()
+    context_object_name = 'CustomUsuario'

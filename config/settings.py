@@ -144,6 +144,8 @@ DEFAULT_FROM_EMAIL = 'franklin@gmail.com'
 
 """
 
+AUTH_USER_MODEL = 'ocorrencia.CustomUsuario'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 

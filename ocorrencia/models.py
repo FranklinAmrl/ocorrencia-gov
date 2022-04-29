@@ -2,6 +2,10 @@ import uuid
 from django.db import models
 from stdimage.models import StdImageField
 
+#from django.contrib.auth import get_user_model
+
+from django.contrib.auth.models import AbstractUser, BaseUserManager
+
 class Base(models.Model):
     criado = models.DateField('Data de criação', auto_now_add=True)
     modificado = models.DateField('Data de atualização', auto_now=True)
@@ -81,3 +85,59 @@ class PassagemPlatao(Base):
 
     def __str__(self):
         return self.data
+
+
+class UsuarioManager(BaseUserManager):
+
+    use_in_migrations = True
+
+    def _create_user(self, cpf, password, **extra_fields):
+        if not cpf:
+            raise ValueError('O email é obrigatório.')
+        cpf = self.normalize_email(cpf)
+        user = self.model(cpf=cpf, username=cpf, **extra_fields)
+        user.set_password(password)
+        user.save(using=self._db)
+
+        return user
+
+    '''def create_user(self, email, password=None, **extra_fields):
+        extra_fields.setdefault('is_staff', False)
+        extra_fields.setdefault('is_superuser', False)
+
+        return self._create_user(email, password, **extra_fields)'''
+
+    def create_staffuser(self, cpf, password=None, **extra_fields):
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_superuser', False)
+
+        if extra_fields.get('is_staff') is not True:
+            raise ValueError('O usuário precisa de ter is_staff=True')
+
+        return self._create_user(cpf, password, **extra_fields)
+
+    def create_superuser(self, cpf, password=None, **extra_fields):
+        extra_fields.setdefault('is_superuser', True)
+        extra_fields.setdefault('is_staff', True)
+
+        if extra_fields.get('is_superuser') is not True:
+            raise ValueError('O usuário precisa de ter is_superuser=True')
+
+        if extra_fields.get('is_staff') is not True:
+            raise ValueError('O usuário precisa de ter is_staff=True')
+
+        return self._create_user(cpf, password, **extra_fields)
+
+class CustomUsuario(AbstractUser):
+    email = models.EmailField('Email', unique=True)
+    cpf = models.CharField('CPF', max_length=11, unique=True)
+    fone = models.CharField('Telefone', max_length=15)
+    is_staff = models.BooleanField('Membro da equipe', default=True)
+
+    USERNAME_FIELD = 'cpf'
+    REQUIRED_FIELDS = ['username','first_name', 'last_name']
+
+    objects = UsuarioManager
+
+    def __str__(self):
+        return f'Login do usuário: {self.cpf}'
