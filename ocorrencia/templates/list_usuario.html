@@ -10,17 +10,19 @@
                     <th scope="col">CPF</th>
                     <th scope="col">Nome</th>
                     <th scope="col">Sobrenome</th>
+                    <th scope="col">Email</th>
                     <th scope="col">Ação</th>
                 </tr>
             </thead>
             <tbody>
                 {% for usuario in page_obj %}
                     <tr>
-                        <a href="{% url 'det_ocorrencia' ocorrencia.id %}" ></a>
+                        
                         <td>{{ usuario.id }}</td>
                         <td>{{ usuario.cpf }}</td>
                         <td>{{ usuario.first_name }}</td>
                         <td>{{ usuario.last_name }}</td>
+                        <td>{{ usuario.email }}</td>
                         <td>
                             <a class="btn btn-success" href="#">Ver</a>
                             <a class="btn btn-primary" href="#">Editar</a>

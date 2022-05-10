@@ -6,10 +6,10 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th scope="col">#</th>
+                    <th scope="col">ID</th>
                     <th scope="col">Tipo</th>
-                    <th scope="col">Descrição</th>
                     <th scope="col">Data</th>
+                    <th scope="col">Centro</th>
                     <th scope="col">Ação</th>
                 </tr>
             </thead>
@@ -19,8 +19,8 @@
                         <a href="{% url 'det_ocorrencia' ocorrencia.id %}" ></a>
                         <td>{{ ocorrencia.id }}</td>
                         <td>{{ ocorrencia.tipo }}</td>
-                        <td>{{ ocorrencia.descricao }}</td>
                         <td>{{ ocorrencia.data }}</td>
+                        <td>{{ ocorrencia.centro }}</td>
                         <td>
                             <a class="btn btn-success" href="{% url 'det_ocorrencia' ocorrencia.id %}">Ver</a>
                             <a class="btn btn-primary" href="{% url 'upd_ocorrencia' ocorrencia.id %}">Editar</a>

@@ -3,11 +3,13 @@ from django.views.generic import ListView
 from django.views.generic import TemplateView
 from django.views.generic.edit import CreateView, UpdateView
 
+from chartjs.views.lines import BaseLineChartView
+
 from django.views import generic
 
 from django.urls import reverse_lazy
 
-from django.contrib.auth import get_user_model
+from random import randint
 
 
 from .models import CustomUsuario, Ocorrencia, PassagemPlatao
@@ -16,8 +18,8 @@ from .models import CustomUsuario, Ocorrencia, PassagemPlatao
 class ListOcorrenciaView(ListView):
     model = Ocorrencia
     template_name = 'list_ocorrencia.html'
-    paginate_by = 15
-    ordering = ['data']
+    paginate_by = 10
+    ordering = ['id']
     queryset = Ocorrencia.objects.all()
     context_object_name = 'Ocorrencia'
 
@@ -62,6 +64,47 @@ class ListCustomUsuarioView(ListView):
     model = CustomUsuario
     template_name = 'list_usuario.html'
     paginate_by = 10
-    ordering = ['data']
     queryset = CustomUsuario.objects.all()
     context_object_name = 'CustomUsuario'
+
+class TemplateEstatisticaView(TemplateView):
+    template_name = 'estatistica.html'
+
+class DadosJSONView(BaseLineChartView):
+
+    
+
+    def get_labels(self):
+        labels = [
+            "Período 01"
+        ]
+
+        return labels
+
+    def get_providers(self):
+        datasets = [
+            "Furto",
+            "Agressão",
+            "Roubo"
+        ]
+        return datasets
+
+    def get_data(self):
+
+        dados = []
+        for l in range(3):
+            for c in range(1):
+                dado = [
+                    randint(1, 20),  # furto
+
+                    randint(1, 20),  # agressao
+
+                    randint(1, 20)  # roubo
+
+                ]
+            dados.append(dado)
+        return dados
+
+class TemplateRelatorioView(TemplateView):
+    #model = Ocorrencia
+    template_name = 'relatorio.html'

@@ -137,7 +137,5 @@ class CustomUsuario(AbstractUser):
     USERNAME_FIELD = 'cpf'
     REQUIRED_FIELDS = ['username','first_name', 'last_name']
 
-    objects = UsuarioManager
-
     def __str__(self):
         return f'Login do usuário: {self.cpf}'

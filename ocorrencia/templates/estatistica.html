@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load bootstrap4 %}
+{% block content %}
+<div>
+  <div class="container">
+    <h1>Estátistica</h1>
+  </div>
+  
+  <div class="row">
+    <div class="col-6">
+      <canvas id="grafico" style="height: 100rem;  width: 100rem;"></canvas>
+    </div>
+    <div class="col-6">
+      <canvas id="grafico2" style="height: 100rem; width: 100rem;"></canvas>
+    </div>
+    
+  </div>
+
+  
+  
+  {% bootstrap_javascript jquery='full' %}
+  <script type="text/javascript" src="{% static 'js/Chart.min.js' %}"></script>
+  
+  <script type="text/javascript">
+  $.get('{% url "dados" %}', function(data){
+    var ctx = $("#grafico").get(0).getContext("2d");
+    new Chart(ctx, {
+        type: 'bar', data: data
+    });
+  });
+
+  $.get('{% url "dados" %}', function(data){
+    var ctx = $("#grafico2").get(0).getContext("2d");
+    new Chart(ctx, {
+        type: 'bar', data: data
+    });
+  });
+
+  </script>
+</div>
+{% endblock %}
