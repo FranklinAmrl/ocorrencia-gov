@@ -1,7 +1,8 @@
 from ast import Pass
+from django.shortcuts import redirect, render
 from django.views.generic import ListView
 from django.views.generic import TemplateView
-from django.views.generic.edit import CreateView, UpdateView
+from django.views.generic.edit import CreateView, UpdateView,FormView
 
 from chartjs.views.lines import BaseLineChartView
 
@@ -11,12 +12,35 @@ from django.urls import reverse_lazy
 
 from random import randint
 
+from django.contrib.auth.mixins import LoginRequiredMixin
 
+from ocorrencia.forms import LoginUsuarioForm
 from .models import Usuario, Ocorrencia, PassagemPlatao
+from django.contrib.auth import authenticate,login,logout
+from django.contrib import messages
 
+class LoginUsuarioView(FormView):
+    form_class = LoginUsuarioForm
+    template_name = "login.html"
+    success_url = '/list-ocorrencia'
+    def post(self,request, *args, **kwargs):
+        classe = super().post(request, *args, **kwargs)
+        usuario = authenticate(username=request.POST['username'], password=request.POST['password'])
+        if usuario:
+            login(request,usuario)
+            return redirect(self.success_url)
+        else:
+            messages.add_message(request, messages.ERROR, 'CPF e/ou senha Inválida')
+            return classe
 
+def logout_view(request):
+    logout(request)
+    return redirect("/login/")
 
-class ListOcorrenciaView(ListView):
+class LoginRequiredClass(LoginRequiredMixin):
+    login_url = "/login/"
+
+class ListOcorrenciaView(LoginRequiredClass,ListView):
     model = Ocorrencia
     template_name = 'list_ocorrencia.html'
     paginate_by = 10
@@ -24,20 +48,20 @@ class ListOcorrenciaView(ListView):
     queryset = Ocorrencia.objects.all()
     context_object_name = 'Ocorrencia'
 
-class CreateOcorrenciaView(CreateView):
+class CreateOcorrenciaView(LoginRequiredClass,CreateView):
     model = Ocorrencia
     template_name = 'ocorrencia_forms.html'
     fields = '__all__'
     success_url = reverse_lazy('list_ocorrencia')
 
-class UpdateOcorrenciaView(UpdateView):
+class UpdateOcorrenciaView(LoginRequiredClass,UpdateView):
     model = Ocorrencia
     template_name = 'ocorrencia_forms.html'
     fields = '__all__'
     success_url = reverse_lazy('list_ocorrencia')
 
 
-class DetailOcorrenciaView(TemplateView):
+class DetailOcorrenciaView(LoginRequiredClass,TemplateView):
     model = Ocorrencia
     template_name = 'ver_ocorrencia.html'
 
@@ -47,7 +71,7 @@ class DetailOcorrenciaView(TemplateView):
         print(context)
         return context
 
-class ListPassagemPlantaoView(ListView):
+class ListPassagemPlantaoView(LoginRequiredClass,ListView):
     model = PassagemPlatao
     template_name = 'list_passagem_plantao.html'
     paginate_by = 15
@@ -55,20 +79,20 @@ class ListPassagemPlantaoView(ListView):
     queryset = PassagemPlatao.objects.all()
     context_object_name = 'PassagemPlatao'
 
-class CreatePassagemPlantaoView(CreateView):
+class CreatePassagemPlantaoView(LoginRequiredClass,CreateView):
     model = PassagemPlatao
     template_name = 'passagem_plantao_forms.html'
     fields = '__all__'
     success_url = reverse_lazy('list_passagem_plantao')
 
-class ListUsuarioView(ListView):
+class ListUsuarioView(LoginRequiredClass,ListView):
     model = Usuario
     template_name = 'list_usuario.html'
     paginate_by = 10
     queryset = Usuario.objects.all()
     context_object_name = 'Usuario'
 
-class TemplateEstatisticaView(TemplateView):
+class TemplateEstatisticaView(LoginRequiredClass,TemplateView):
     template_name = 'estatistica.html'
 
 class DadosJSONView(BaseLineChartView):
@@ -106,6 +130,6 @@ class DadosJSONView(BaseLineChartView):
             dados.append(dado)
         return dados
 
-class TemplateRelatorioView(TemplateView):
+class TemplateRelatorioView(LoginRequiredMixin,TemplateView):
     #model = Ocorrencia
     template_name = 'relatorio.html'

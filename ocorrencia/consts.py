@@ -6,3 +6,7 @@ class TipoUsuarioChoices(IntegerChoices):
     GESTOR = 2, 'Gestor'
     INSPETOR = 3, 'Inspetor'
     NOTIFICANTE = 4, 'Notificante'
+
+class StatusUsuarioChoices(IntegerChoices):
+    ATIVO = 1, 'Ativo'
+    INATIVO = 2, 'Inativo'

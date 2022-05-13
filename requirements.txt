@@ -12,3 +12,5 @@ soupsieve==2.3.1
 sqlparse==0.4.2
 static3==0.7.0
 tzdata==2021.5
+django-mptt==0.13.4
+django-extensions

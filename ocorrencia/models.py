@@ -6,7 +6,7 @@ from mptt.models import MPTTModel
 
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 
-from ocorrencia.consts import TipoUsuarioChoices
+from ocorrencia.consts import StatusUsuarioChoices, TipoUsuarioChoices
 
 class Base(models.Model):
     criado = models.DateField('Data de criação', auto_now_add=True)
@@ -130,13 +130,30 @@ class UsuarioManager(BaseUserManager):
 
         return self._create_user(cpf, password, **extra_fields)
 
-class Usuario(AbstractUser,MPTTModel):
-    email = models.EmailField('Email', unique=True)
+class User(AbstractUser):
+    status = models.PositiveSmallIntegerField(choices = StatusUsuarioChoices.choices, default=StatusUsuarioChoices.ATIVO)
     username = models.CharField('CPF', max_length=11, unique=True)
+    email = models.EmailField('Email', unique=True)
+
+    class Meta:
+        ordering = ['first_name']
+
+class Usuario(User,MPTTModel):
     fone = models.CharField('Telefone', max_length=15)
     perfil = models.PositiveSmallIntegerField(choices = TipoUsuarioChoices.choices)
     parent = models.ForeignKey('Usuario', null=True, blank=True, on_delete=models.PROTECT)
     
+    def save(self, force_insert=False, force_update=False, using=None,
+             update_fields=None):
+        if not self.id:
+            if self.perfil == TipoUsuarioChoices.ADMINISTRATOR:
+                super().save(force_insert, force_update, using, update_fields)
+            elif self.parent and self.perfil > self.parent.perfil:
+                super().save(force_insert, force_update, using, update_fields)
+        else:
+            super().save(force_insert, force_update, using, update_fields)
+
+
     class MPTTMeta:
         order_insertion_by = ['first_name']
 

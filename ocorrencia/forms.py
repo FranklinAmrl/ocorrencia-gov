@@ -1,3 +1,4 @@
+from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 
 from .models import Usuario
@@ -22,3 +23,8 @@ class UsuarioChangeForm(UserChangeForm):
     class Meta:
         model = Usuario
         fields = '__all__'
+
+
+class LoginUsuarioForm(forms.Form):
+    username = forms.CharField(max_length=11)
+    password = forms.CharField(widget=forms.PasswordInput())
