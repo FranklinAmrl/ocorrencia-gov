@@ -1,7 +1,7 @@
 from django.urls import path
 
 
-from .views import ListOcorrenciaView, CreateOcorrenciaView, UpdateOcorrenciaView, DetailOcorrenciaView, ListPassagemPlantaoView, CreatePassagemPlantaoView, ListCustomUsuarioView, DadosJSONView, TemplateEstatisticaView, TemplateRelatorioView
+from .views import ListOcorrenciaView, CreateOcorrenciaView, UpdateOcorrenciaView, DetailOcorrenciaView, ListPassagemPlantaoView, CreatePassagemPlantaoView, ListUsuarioView, DadosJSONView, TemplateEstatisticaView, TemplateRelatorioView
 
 urlpatterns = [
     path('list-ocorrencia/', ListOcorrenciaView.as_view(), name='list_ocorrencia'),
@@ -10,7 +10,7 @@ urlpatterns = [
     path('<int:id>/detail/', DetailOcorrenciaView.as_view(), name='det_ocorrencia'),
     path('list-passagem-plantao/', ListPassagemPlantaoView.as_view(), name='list_passagem_plantao'),
     path('add-passagem-plantao/', CreatePassagemPlantaoView.as_view(), name='add_passagem_plantao'),
-    path('list-usuario/', ListCustomUsuarioView.as_view(), name='list_usuario'),
+    path('list-usuario/', ListUsuarioView.as_view(), name='list_usuario'),
     path('relatorio/', TemplateRelatorioView.as_view(), name='relatorio'),
     path('estatistica', TemplateEstatisticaView.as_view(), name='estatistica'),
     path('dados/', DadosJSONView.as_view(), name='dados'),

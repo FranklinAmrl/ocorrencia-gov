@@ -1,10 +1,12 @@
 import uuid
 from django.db import models
 from stdimage.models import StdImageField
-
+from mptt.models import MPTTModel
 #from django.contrib.auth import get_user_model
 
 from django.contrib.auth.models import AbstractUser, BaseUserManager
+
+from ocorrencia.consts import TipoUsuarioChoices
 
 class Base(models.Model):
     criado = models.DateField('Data de criação', auto_now_add=True)
@@ -128,14 +130,15 @@ class UsuarioManager(BaseUserManager):
 
         return self._create_user(cpf, password, **extra_fields)
 
-class CustomUsuario(AbstractUser):
+class Usuario(AbstractUser,MPTTModel):
     email = models.EmailField('Email', unique=True)
-    cpf = models.CharField('CPF', max_length=11, unique=True)
+    username = models.CharField('CPF', max_length=11, unique=True)
     fone = models.CharField('Telefone', max_length=15)
-    is_staff = models.BooleanField('Membro da equipe', default=True)
-
-    USERNAME_FIELD = 'cpf'
-    REQUIRED_FIELDS = ['username','first_name', 'last_name']
+    perfil = models.PositiveSmallIntegerField(choices = TipoUsuarioChoices.choices)
+    parent = models.ForeignKey('Usuario', null=True, blank=True, on_delete=models.PROTECT)
+    
+    class MPTTMeta:
+        order_insertion_by = ['first_name']
 
     def __str__(self):
         return f'Login do usuário: {self.cpf}'

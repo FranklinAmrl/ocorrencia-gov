@@ -12,7 +12,8 @@ from django.urls import reverse_lazy
 from random import randint
 
 
-from .models import CustomUsuario, Ocorrencia, PassagemPlatao
+from .models import Usuario, Ocorrencia, PassagemPlatao
+
 
 
 class ListOcorrenciaView(ListView):
@@ -60,12 +61,12 @@ class CreatePassagemPlantaoView(CreateView):
     fields = '__all__'
     success_url = reverse_lazy('list_passagem_plantao')
 
-class ListCustomUsuarioView(ListView):
-    model = CustomUsuario
+class ListUsuarioView(ListView):
+    model = Usuario
     template_name = 'list_usuario.html'
     paginate_by = 10
-    queryset = CustomUsuario.objects.all()
-    context_object_name = 'CustomUsuario'
+    queryset = Usuario.objects.all()
+    context_object_name = 'Usuario'
 
 class TemplateEstatisticaView(TemplateView):
     template_name = 'estatistica.html'

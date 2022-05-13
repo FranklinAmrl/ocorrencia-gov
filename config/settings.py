@@ -140,7 +140,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-#AUTH_USER_MODEL = 'usuarios.CustomUsuario'
 
 """
 # Email para produção
@@ -154,7 +153,7 @@ DEFAULT_FROM_EMAIL = 'franklin@gmail.com'
 
 """
 
-AUTH_USER_MODEL = 'ocorrencia.CustomUsuario'
+AUTH_USER_MODEL = 'ocorrencia.Usuario'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field

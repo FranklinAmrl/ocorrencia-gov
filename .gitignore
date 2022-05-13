@@ -12,6 +12,6 @@ __pycache__
 
 .idea
 
-/core/migrations
+/ocorrencia/migrations
 
 migrations
