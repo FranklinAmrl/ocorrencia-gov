@@ -6,7 +6,7 @@ from mptt.models import MPTTModel
 
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 
-from ocorrencia.consts import StatusUsuarioChoices, TipoUsuarioChoices
+from ocorrencia.consts import StatusUsuarioChoices, TipoCentroChoices, TipoEnvolvidoChoices, TipoGeneroChoices, TipoUsuarioChoices, TipoOcorrenciaChoices
 
 class Base(models.Model):
     criado = models.DateField('Data de criação', auto_now_add=True)
@@ -21,49 +21,18 @@ def get_file_path(_instance, filename):
     return filename
 
 class Ocorrencia(Base):
-    CENTRO_CHOICES = (
-        ('Almoxarifa-do-central', 'Almoxarifado Central'),
-        ('Arquealogia', 'Arquealogia'),
-        ('Apoio-pista-de-cooper', 'Apaio Pista de Cooper'),
-        ('Biblioteca-central', 'Biblioteca Central'),
-        ('Bloco-compartilhado-ccb', 'Bloco CoSSmpartilhado-CCB'),
-        ('Bloco-compartilhados-outros', 'Bloco Compartilhado-CFCH/CE/CCSA'),
-    )
 
-    TIPO_OCORRENCIA_CHOICES = (
-        ('Agressao', 'Agressão'),
-        ('Roubo', 'Roubo'),
-        ('Furto', 'Furto'),
-    )
-
-    TIPO_ENVOLVIDO_CHOICES = (
-        ('Suspeito', 'Suspeito'),
-        ('Vitima', 'Vitima'),
-    )
-
-    TIPO_GENERO_CHOICES = (
-        ('Feminino', 'Feminino'),
-        ('Masculino', 'Masculino'),
-        ('Outros', 'Outros'),
-    )
-
-    '''
-    TIPO_OBJETO_CHOICES = (
-        ('Feminino', 'Feminino'),
-        ('Masculino', 'Masculino'),
-        ('Outros', 'Outros'),
-    )'''
-
-    coordenadaX = models.CharField('Coordenadas X', max_length=255)
-    coordenadaY = models.CharField('Coordenadas Y', max_length=255)
-    centro = models.CharField('Centro', max_length=255, choices=CENTRO_CHOICES)
+    local = models.CharField('Local do ocorrência', max_length=255)
+    coordenadaX = models.CharField('Coordenadas X', max_length=255, null=True, blank=True)
+    coordenadaY = models.CharField('Coordenadas Y', max_length=255, null=True, blank=True)
+    centro = models.PositiveSmallIntegerField(choices = TipoCentroChoices.choices)
     referencia = models.CharField('Local de referência', max_length=255, null=True)
     data = models.DateTimeField('Data e hora', auto_now_add=False, auto_now=False)
-    tipo = models.CharField('Tipo da ocorrência', max_length=255, choices=TIPO_OCORRENCIA_CHOICES)
+    tipo = models.PositiveSmallIntegerField(choices = TipoOcorrenciaChoices.choices)
     descricao = models.TextField('Descrição da ocorrência', max_length=255, null=True)
     envolvidoNome = models.CharField('Nome do envolvido', max_length=100, null=True, blank=True)
-    tipoEnvolvido = models.CharField('Tipo do envolvido', max_length=255, choices=TIPO_ENVOLVIDO_CHOICES, null=True, blank=True)
-    genero = models.CharField('Gênero do envolvido', max_length=255, choices=TIPO_GENERO_CHOICES, null=True, blank=True)
+    envolvidos = models.PositiveSmallIntegerField(choices = TipoEnvolvidoChoices.choices, null=True, blank=True)
+    genero = models.PositiveSmallIntegerField(choices = TipoGeneroChoices.choices, null=True, blank=True)
     cpf = models.IntegerField('CPF do envolvido', null=True, blank=True)
     email = models.EmailField('Email do envolvido', max_length=100, null=True, blank=True)
     fone = models.CharField('Telefone do envolvido', max_length=14, null=True, blank=True)
@@ -75,6 +44,21 @@ class Ocorrencia(Base):
 
     def __str__(self):
         return self.tipo
+
+    @classmethod
+    def get_qtd_tipo_ocorrencia(cls):
+
+        save_data = {}
+        index_numero_tipo = 0
+        descricao_tipo = 1
+        qtd = 0
+        tipos = TipoOcorrenciaChoices.choices
+        for tipo in tipos:
+            qtd = cls.objects.filter(tipo=tipo[index_numero_tipo]).count()
+            save_data[tipo[descricao_tipo]] = qtd
+
+        return save_data
+
 
 class PassagemPlatao(Base):
     data = models.DateTimeField('Data e hora', auto_now_add=False, auto_now=False)

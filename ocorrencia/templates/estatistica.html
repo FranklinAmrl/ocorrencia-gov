@@ -30,12 +30,18 @@
     });
   });
 
-  $.get('{% url "dados" %}', function(data){
-    var ctx = $("#grafico2").get(0).getContext("2d");
-    new Chart(ctx, {
-        type: 'bar', data: data
-    });
-  });
+  var ctx = document.getElementById('grafico2').getContext('2d');
+  var myChart2 = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: [{% for label in datasets %} '{{ label }}', {% endfor %}]
+      ,
+      datasets: [{
+        data: [{% for tipo, count in dados.items %} '{{ count }}', {% endfor %}]
+      }],
+
+    }
+  })
 
   </script>
 </div>

@@ -1,4 +1,5 @@
 from ast import Pass
+from dataclasses import dataclass
 from django.shortcuts import redirect, render
 from django.views.generic import ListView
 from django.views.generic import TemplateView
@@ -92,6 +93,10 @@ class ListUsuarioView(LoginRequiredClass,ListView):
     queryset = Usuario.objects.all()
     context_object_name = 'Usuario'
 
+class TemplateRelatorioView(LoginRequiredMixin,TemplateView):
+    #model = Ocorrencia
+    template_name = 'relatorio.html'    
+
 class TemplateEstatisticaView(LoginRequiredClass,TemplateView):
     template_name = 'estatistica.html'
 
@@ -101,35 +106,21 @@ class DadosJSONView(BaseLineChartView):
 
     def get_labels(self):
         labels = [
-            "Período 01"
+            "Ano 2022",
         ]
 
         return labels
 
     def get_providers(self):
-        datasets = [
-            "Furto",
-            "Agressão",
-            "Roubo"
-        ]
+
+        datasets = Ocorrencia.get_qtd_tipo_ocorrencia().keys()
+
         return datasets
 
     def get_data(self):
+        
+        dados = Ocorrencia.get_qtd_tipo_ocorrencia()
+        
 
-        dados = []
-        for l in range(3):
-            for c in range(1):
-                dado = [
-                    randint(1, 20),  # furto
-
-                    randint(1, 20),  # agressao
-
-                    randint(1, 20)  # roubo
-
-                ]
-            dados.append(dado)
         return dados
 
-class TemplateRelatorioView(LoginRequiredMixin,TemplateView):
-    #model = Ocorrencia
-    template_name = 'relatorio.html'

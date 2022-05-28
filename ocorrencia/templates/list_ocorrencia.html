@@ -18,7 +18,7 @@
                     <tr>
                         <a href="{% url 'det_ocorrencia' ocorrencia.id %}" ></a>
                         <td>{{ ocorrencia.id }}</td>
-                        <td>{{ ocorrencia.tipo }}</td>
+                        <td>{{ ocorrencia.get_tipo_display }}</td>
                         <td>{{ ocorrencia.data }}</td>
                         <td>{{ ocorrencia.centro }}</td>
                         <td>
