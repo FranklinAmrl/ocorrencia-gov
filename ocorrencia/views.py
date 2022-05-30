@@ -20,6 +20,10 @@ from .models import Usuario, Ocorrencia, PassagemPlatao
 from django.contrib.auth import authenticate,login,logout
 from django.contrib import messages
 
+import csv
+import io
+from django.http import HttpResponse
+
 class LoginUsuarioView(FormView):
     form_class = LoginUsuarioForm
     template_name = "login.html"
@@ -92,10 +96,7 @@ class ListUsuarioView(LoginRequiredClass,ListView):
     paginate_by = 10
     queryset = Usuario.objects.all()
     context_object_name = 'Usuario'
-
-class TemplateRelatorioView(LoginRequiredMixin,TemplateView):
-    #model = Ocorrencia
-    template_name = 'relatorio.html'    
+  
 
 class TemplateEstatisticaView(LoginRequiredClass,TemplateView):
     template_name = 'estatistica.html'
@@ -124,3 +125,22 @@ class DadosJSONView(BaseLineChartView):
 
         return dados
 
+class TemplateRelatorioView(LoginRequiredMixin,TemplateView):
+    #model = Ocorrencia
+    template_name = 'relatorio.html' 
+
+def relatorio_csv(request):
+
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename=ocorrencia.csv'
+
+    writer = csv.writer(response)
+
+    ocorrencias = Ocorrencia.objects.all()
+
+    writer.writerow(['Hora/Data', 'Local', 'Tipo', 'Descrição'])
+
+    for ocorrencia in ocorrencias:
+        writer.writerow([ocorrencia.data, ocorrencia.centro, ocorrencia.tipo, ocorrencia.descricao])
+
+    return response

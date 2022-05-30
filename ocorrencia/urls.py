@@ -3,7 +3,7 @@ from django.urls import path
 
 from .views import ListOcorrenciaView, CreateOcorrenciaView, LoginUsuarioView, UpdateOcorrenciaView, DetailOcorrenciaView, ListPassagemPlantaoView, CreatePassagemPlantaoView, ListUsuarioView, DadosJSONView, TemplateEstatisticaView, TemplateRelatorioView
 
-from .views import logout_view
+from .views import logout_view, relatorio_csv
 
 urlpatterns = [
     path('login/',LoginUsuarioView.as_view(),name='login_usuario'),
@@ -17,6 +17,7 @@ urlpatterns = [
     path('add-passagem-plantao/', CreatePassagemPlantaoView.as_view(), name='add_passagem_plantao'),
     path('list-usuario/', ListUsuarioView.as_view(), name='list_usuario'),
     path('relatorio/', TemplateRelatorioView.as_view(), name='relatorio'),
+    path('relatorio-csv/', relatorio_csv, name='relatorio_csv'),
     path('estatistica', TemplateEstatisticaView.as_view(), name='estatistica'),
     path('dados/', DadosJSONView.as_view(), name='dados'),
 ]
