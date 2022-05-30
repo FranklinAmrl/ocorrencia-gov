@@ -7,7 +7,7 @@ from django.views.generic.edit import CreateView, UpdateView,FormView
 
 from chartjs.views.lines import BaseLineChartView
 
-from django.views import generic
+from django.views import View, generic
 
 from django.urls import reverse_lazy
 
@@ -15,7 +15,7 @@ from random import randint
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from ocorrencia.forms import LoginUsuarioForm
+from ocorrencia.forms import LoginUsuarioForm, FiltroRelatorioOcorrencia
 from .models import Usuario, Ocorrencia, PassagemPlatao
 from django.contrib.auth import authenticate,login,logout
 from django.contrib import messages
@@ -23,6 +23,10 @@ from django.contrib import messages
 import csv
 import io
 from django.http import HttpResponse
+
+from datetime import datetime
+
+from django.db.models import Q
 
 class LoginUsuarioView(FormView):
     form_class = LoginUsuarioForm
@@ -125,22 +129,48 @@ class DadosJSONView(BaseLineChartView):
 
         return dados
 
-class TemplateRelatorioView(LoginRequiredMixin,TemplateView):
-    #model = Ocorrencia
+class TemplateRelatorioView(LoginRequiredMixin, View):
+    model = Ocorrencia
+    form = FiltroRelatorioOcorrencia
     template_name = 'relatorio.html' 
 
-def relatorio_csv(request):
+    def get(self,request):
 
-    response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename=ocorrencia.csv'
+        form = self.form()
 
-    writer = csv.writer(response)
+        return render(request, self.template_name, {'form': form, 'ocorrencia': Ocorrencia.objects.all()})
 
-    ocorrencias = Ocorrencia.objects.all()
+    def post(self,request):
 
-    writer.writerow(['Hora/Data', 'Local', 'Tipo', 'Descrição'])
+        return self.relatorio_csv(request)
 
-    for ocorrencia in ocorrencias:
-        writer.writerow([ocorrencia.data, ocorrencia.centro, ocorrencia.tipo, ocorrencia.descricao])
+    @staticmethod
+    def relatorio_csv(request):
 
-    return response
+        ocorrencias = Ocorrencia.objects.all()
+
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename=ocorrencia.csv'
+
+        writer = csv.writer(response, delimiter=';')
+
+        tipo = request.POST.get('tipo')
+        data_inicial = request.POST.get('data_inicial')
+        data_final = request.POST.get('data_final')
+
+        if tipo:
+            ocorrencias = ocorrencias.filter(tipo=tipo)
+        if data_inicial:
+            data_inicial = datetime.strptime(data_inicial, '%Y-%m-%d')
+            ocorrencias = ocorrencias.filter(data__gte=data_inicial)
+        if data_final:
+            data_final = datetime.strptime(data_final, '%Y-%m-%d')
+            ocorrencias = ocorrencias.filter(data__lte=data_final)
+
+        writer.writerow(['Hora/Data', 'Local', 'Tipo', 'Descrição'])
+
+        for ocorrencia in ocorrencias:
+            writer.writerow([ocorrencia.data.strftime('%d-%m-%Y %H:%M'), ocorrencia.get_centro_display(), ocorrencia.get_tipo_display(), ocorrencia.descricao])
+            print(ocorrencia.data.strftime('%d-%m-%Y %H:%M'))
+
+        return response

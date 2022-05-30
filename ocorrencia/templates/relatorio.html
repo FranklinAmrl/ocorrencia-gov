@@ -3,6 +3,22 @@
 {% block content %}
     <div>
         <h1>Relatório</h1>
-        <a class="btn btn-primary" href="{% url 'relatorio_csv' %}">Gerar relatório em CSV</a>
+        <div class="row">
+            <div class="col-6">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="form-group"><label for="id_filtro_ocorrencia">Filtrar ocorrência</label>
+                        {{ form.tipo }}
+                    </div>
+                    <div class="form-group"><label for="id_filtro_ocorrencia">Filtrar por data inicial</label>
+                        {{ form.data_inicial }}
+                    </div>
+                    <div class="form-group"><label for="id_filtro_ocorrencia">Filtrar por data Final</label>
+                        {{ form.data_final }}
+                    </div>
+                    <button class="btn btn-primary" type="submit">Gerar relatório em CSV</button>
+                  </form>
+            </div>
+        </div>
     </div>
 {% endblock %}
