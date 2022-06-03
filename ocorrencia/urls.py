@@ -1,7 +1,7 @@
 from django.urls import path
 
 
-from .views import ListOcorrenciaView, CreateOcorrenciaView, LoginUsuarioView, UpdateOcorrenciaView, DetailOcorrenciaView, ListPassagemPlantaoView, CreatePassagemPlantaoView, ListUsuarioView, DadosJSONView, TemplateEstatisticaView, TemplateRelatorioView
+from .views import ListOcorrenciaView, CreateOcorrenciaView, LoginUsuarioView, UpdateOcorrenciaView, DetailOcorrenciaView, ListPassagemPlantaoView, CreatePassagemPlantaoView, ListUsuarioView, DadosJSONView, TemplateEstatisticaView, TemplateRelatorioView, post
 
 from .views import logout_view
 
@@ -10,7 +10,8 @@ urlpatterns = [
     path('logout/',logout_view,name='login_usuario'),
     path('list-ocorrencia/', ListOcorrenciaView.as_view(), name='list_ocorrencia'),
     path('', ListOcorrenciaView.as_view(), name='list_ocorrencia'),
-    path('add-ocorrencia/', CreateOcorrenciaView.as_view(), name='add_ocorrencia'),
+    #path('add-ocorrencia/', CreateOcorrenciaView.as_view(), name='add_ocorrencia'),
+    path('add-ocorrencia/', post, name='add_ocorrencia'),
     path('<int:pk>/update/', UpdateOcorrenciaView.as_view(), name='upd_ocorrencia'),
     path('<int:id>/detail/', DetailOcorrenciaView.as_view(), name='det_ocorrencia'),
     path('list-passagem-plantao/', ListPassagemPlantaoView.as_view(), name='list_passagem_plantao'),

@@ -15,14 +15,14 @@ from random import randint
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from ocorrencia.forms import LoginUsuarioForm, FiltroRelatorioOcorrencia
+from ocorrencia.forms import CreateOcorrenciaForm, LoginUsuarioForm, FiltroRelatorioOcorrencia
 from .models import Usuario, Ocorrencia, PassagemPlatao
 from django.contrib.auth import authenticate,login,logout
 from django.contrib import messages
 
 import csv
 import io
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 
 from datetime import datetime
 
@@ -52,16 +52,37 @@ class LoginRequiredClass(LoginRequiredMixin):
 class ListOcorrenciaView(LoginRequiredClass,ListView):
     model = Ocorrencia
     template_name = 'list_ocorrencia.html'
-    paginate_by = 10
+    paginate_by = 5
     ordering = ['id']
     queryset = Ocorrencia.objects.all()
     context_object_name = 'Ocorrencia'
 
-class CreateOcorrenciaView(LoginRequiredClass,CreateView):
+class CreateOcorrenciaView(LoginRequiredClass, View):
+
     model = Ocorrencia
     template_name = 'ocorrencia_forms.html'
-    fields = '__all__'
     success_url = reverse_lazy('list_ocorrencia')
+
+
+def post(request):
+    
+    submitted = False
+    template_name = 'ocorrencia_forms.html'
+    
+    if request.method == "POST":
+        
+        form = CreateOcorrenciaForm(request.POST)
+        
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/add-ocorrencia?submitted=True')
+    else:
+        form = CreateOcorrenciaForm
+        if 'submitted' in request.GET:
+            submitted = True
+
+    return render(request, template_name, {'form':form, 'submitted':submitted})
+
 
 class UpdateOcorrenciaView(LoginRequiredClass,UpdateView):
     model = Ocorrencia

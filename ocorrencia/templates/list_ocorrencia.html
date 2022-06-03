@@ -20,7 +20,7 @@
                         <td>{{ ocorrencia.id }}</td>
                         <td>{{ ocorrencia.get_tipo_display }}</td>
                         <td>{{ ocorrencia.data }}</td>
-                        <td>{{ ocorrencia.centro }}</td>
+                        <td>{{ ocorrencia.get_centro_display }}</td>
                         <td>
                             <a class="btn btn-success" href="{% url 'det_ocorrencia' ocorrencia.id %}">Ver</a>
                             <a class="btn btn-primary" href="{% url 'upd_ocorrencia' ocorrencia.id %}">Editar</a>

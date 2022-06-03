@@ -2,14 +2,22 @@
 {% load bootstrap4 %}
 {% block content %}
     <h1>Ocorrências</h1>
-    <form method="post">
-        {% csrf_token %}
-        {% bootstrap_form form %}
-            {% buttons %}
-                <button type="submit" class="btn btn-primary">Salvar</button>
+    
+    
+    {% if submitted %}
+        Ocorrência cadastrada com sucesso.
+    {% else %}
+        
+    
+        <form action="" method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+
+                <button type="submit" class="btn btn-success">Salvar</button>
                 <button type="submit" class="btn btn-warning">
                     <a href="{% url 'list_ocorrencia' %}">Cancelar</a>
                 </button>
-            {% endbuttons %}
-    </form>
+
+        </form>
+    {% endif %}
 {% endblock %}

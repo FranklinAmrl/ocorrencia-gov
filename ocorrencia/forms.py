@@ -1,9 +1,10 @@
+from dataclasses import fields
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 
-from ocorrencia.consts import TipoOcorrenciaChoices
+from ocorrencia.consts import TipoCentroChoices, TipoOcorrenciaChoices
 
-from .models import Usuario
+from .models import Ocorrencia, Usuario
 class UsuarioCreateForm(UserCreationForm):
 
     class Meta:
@@ -32,7 +33,7 @@ class LoginUsuarioForm(forms.Form):
 
 class FiltroRelatorioOcorrencia(forms.Form):
     
-    tipo = forms.ChoiceField(choices=TipoOcorrenciaChoices.choices+[('','Todxs os tipos de ocorrência')], 
+    tipo = forms.ChoiceField(choices=TipoOcorrenciaChoices.choices+[('','Todos os tipos de ocorrência')], 
     required=False, 
     widget=forms.Select(
         attrs={'class': 'form-control'
@@ -54,3 +55,47 @@ class FiltroRelatorioOcorrencia(forms.Form):
                 'type':"date"
 
     }))
+class CreateOcorrenciaForm(forms.ModelForm):
+
+    centro = forms.ChoiceField(choices = TipoCentroChoices.choices+[('','Selecione')], 
+    widget=forms.Select(
+        attrs={'class': 'form-control'
+
+    }))
+    tipo = forms.ChoiceField(choices=TipoOcorrenciaChoices.choices+[('','Selecione')],
+    widget=forms.Select(
+        attrs={'class': 'form-control'
+
+    }))
+    data = forms.DateField( 
+    required=True, 
+    widget=forms.DateInput(
+        attrs={'class': 'form-control',
+                'type':"date"
+
+    }))
+
+    class Meta():
+        
+        model = Ocorrencia
+        fields = ('local', 'coordenadaX', 'coordenadaY', 'centro', 'referencia', 'tipo', 'data', 'descricao')
+
+
+        widgets = {
+            'local' : forms.TextInput(
+                attrs={'class': 'form-control'}
+            ),
+            'coordenadaX' : forms.TextInput(
+                attrs={'class': 'form-control'})
+            ,
+            'coordenadaY' : forms.TextInput(
+                attrs={'class': 'form-control'}
+            ),
+                        
+            'referencia' : forms.TextInput(
+                attrs={'class': 'form-control'}
+            ),
+
+            'descricao' : forms.Textarea(
+                attrs={'class': 'form-control'})
+        }

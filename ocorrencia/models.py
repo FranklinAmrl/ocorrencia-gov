@@ -22,7 +22,7 @@ def get_file_path(_instance, filename):
 
 class Ocorrencia(Base):
 
-    local = models.CharField('Local do ocorrência', max_length=255)
+    local = models.CharField('Local da ocorrência', max_length=255)
     coordenadaX = models.CharField('Coordenadas X', max_length=255, null=True, blank=True)
     coordenadaY = models.CharField('Coordenadas Y', max_length=255, null=True, blank=True)
     centro = models.PositiveSmallIntegerField(choices = TipoCentroChoices.choices)
