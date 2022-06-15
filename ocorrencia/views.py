@@ -98,13 +98,20 @@ class DetailOcorrenciaView(LoginRequiredClass,TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['ocorrencia'] = Ocorrencia.objects.get(id=kwargs.get('id'))
-        print(context)
+        return context
+class DetailPassagemView(LoginRequiredClass,TemplateView):
+    model = PassagemPlatao
+    template_name = 'ver_passagem.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['passagem'] = PassagemPlatao.objects.get(id=kwargs.get('id'))
         return context
 
 class ListPassagemPlantaoView(LoginRequiredClass,ListView):
     model = PassagemPlatao
     template_name = 'list_passagem_plantao.html'
-    paginate_by = 15
+    paginate_by = 5
     ordering = ['data']
     queryset = PassagemPlatao.objects.all()
     context_object_name = 'PassagemPlatao'
@@ -167,6 +174,37 @@ class TemplateRelatorioView(LoginRequiredMixin, View):
 
     @staticmethod
     def relatorio_csv(request):
+
+        ocorrencias = Ocorrencia.objects.all()
+
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename=ocorrencia.csv'
+
+        writer = csv.writer(response, delimiter=';')
+
+        tipo = request.POST.get('tipo')
+        data_inicial = request.POST.get('data_inicial')
+        data_final = request.POST.get('data_final')
+
+        if tipo:
+            ocorrencias = ocorrencias.filter(tipo=tipo)
+        if data_inicial:
+            data_inicial = datetime.strptime(data_inicial, '%Y-%m-%d')
+            ocorrencias = ocorrencias.filter(data__gte=data_inicial)
+        if data_final:
+            data_final = datetime.strptime(data_final, '%Y-%m-%d')
+            ocorrencias = ocorrencias.filter(data__lte=data_final)
+
+        writer.writerow(['Hora/Data', 'Local', 'Tipo', 'Descrição'])
+
+        for ocorrencia in ocorrencias:
+            writer.writerow([ocorrencia.data.strftime('%d-%m-%Y %H:%M'), ocorrencia.get_centro_display(), ocorrencia.get_tipo_display(), ocorrencia.descricao])
+            print(ocorrencia.data.strftime('%d-%m-%Y %H:%M'))
+
+        return response
+
+    @staticmethod
+    def relatorio_pdf(request):
 
         ocorrencias = Ocorrencia.objects.all()
 

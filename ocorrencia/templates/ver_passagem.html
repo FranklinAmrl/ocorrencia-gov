@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% block content %}
+<meta name="msapplication-tap-highlight" content="no">
+<link href="./main.87c0748b313a1dda75f5.css" rel="stylesheet">
+<h1>Detalhes da ocorrência</h1>
+    <div class="row">
+        <div class="col-sm-12 col-lg-12">
+            <div class="main-card mb-3 card">
+                <div class="card-header"><p>Relato</p>
+                </div>
+                <div class="card-body">
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="tab-eg1-0" role="tabpanel"><p>{{ ocorrencia.descricao }}<p></div>
+                        
+                    </div>
+                </div>
+            
+        </div>
+    </div>
+    <div>
+        <a class="btn btn-primary" href="{% url 'list_ocorrencia' %}">Voltar</a>
+        <a href="{% url 'upd_ocorrencia' ocorrencia.id %}" class="btn-wide btn btn-success">Editar</a>
+    </div>
+    {% bootstrap_javascript jquery='full' %}
+{% endblock %}

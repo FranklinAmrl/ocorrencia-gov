@@ -1,41 +1,120 @@
 {% extends 'base.html' %}
 {% load bootstrap4 %}
 {% block content %}
-    <div class="row">
-        <h1>Ocorrências</h1>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Tipo</th>
-                    <th scope="col">Centro</th>
-                    <th scope="col">Descrição</th>
-                    <th scope="col">Criado</th>
-                    <th scope="col">Data</th>
-                    <th scope="col">Ação</th>
-                </tr>
-            </thead>
-            <tbody>
-                    <tr>
-                        <td>{{ ocorrencia.id }}</td>
-                        <td>{{ ocorrencia.tipo }}</td>
-                        <td>{{ ocorrencia.centro }}</td>
-                        <td>{{ ocorrencia.descricao }}</td>
-                        <td>{{ ocorrencia.criado }}</td>
-                        <td>{{ ocorrencia.data }}</td>
-                        <td>
-                            <a class="btn btn-primary" href="{% url 'upd_ocorrencia' ocorrencia.id %}">Editar</a>
-                            <button class="mr-2 btn-icon btn-icon-only btn btn-outline-danger"><i class="pe-7s-trash btn-icon-wrapper"> Apagar </i></button>
-                        </td>
-                    </tr>
-            </tbody>
-        </table>
+<meta name="msapplication-tap-highlight" content="no">
+<link href="./main.87c0748b313a1dda75f5.css" rel="stylesheet">
+<h1>Detalhes da ocorrência</h1>
 
-        {% include 'paginacao.html' %}
-
+<div class="row">
+    <div class="col-6">
+        <div class="main-card mb-4 card">
+            <div style="font-size: 1.5rem;" class="card-header"><p>Local</p>
+            </div>
+            <div class="card-body">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="tab-eg1-0" role="tabpanel">
+                        <p>DEIXAR MAPA GOOGLE 
+                            <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 48 48" width="48px" height="48px">
+                                <path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"/><path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"/><path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"/><path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"/>
+                            </svg>
+                            <p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div>
+    <div class="col-6">
+        <div class="main-card mb-4 card">
+            <div style="font-size: 1.5rem;" class="card-header"><p>Informações do local</p>
+            </div>
+            <div class="card-body">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="tab-eg1-0" role="tabpanel">
+                        <p>{{ ocorrencia.data }}<p>
+                        <p>{{ ocorrencia.get_centro_display }}<p>
+                        <p>{{ ocorrencia.get_tipo_display }}<p>
+                    </div>
+                </div>
+            </div>
+    </div>
+</div>
+<div>
+    <div class="col-sm-12 col-lg-12">
+        <div class="main-card mb-3 card">
+            <div class="card-header">
+                <p style="font-size: 1.5rem;">Relato
+                    <i>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="#000000" viewBox="0 0 30 30" width="20px" height="20px">
+                        <path d="M 22.828125 3 C 22.316375 3 21.804562 3.1954375 21.414062 3.5859375 L 19 6 L 24 11 L 26.414062 8.5859375 C 27.195062 7.8049375 27.195062 6.5388125 26.414062 5.7578125 L 24.242188 3.5859375 C 23.851688 3.1954375 23.339875 3 22.828125 3 z M 17 8 L 5.2597656 19.740234 C 5.2597656 19.740234 6.1775313 19.658 6.5195312 20 C 6.8615312 20.342 6.58 22.58 7 23 C 7.42 23.42 9.6438906 23.124359 9.9628906 23.443359 C 10.281891 23.762359 10.259766 24.740234 10.259766 24.740234 L 22 13 L 17 8 z M 4 23 L 3.0566406 25.671875 A 1 1 0 0 0 3 26 A 1 1 0 0 0 4 27 A 1 1 0 0 0 4.328125 26.943359 A 1 1 0 0 0 4.3378906 26.939453 L 4.3632812 26.931641 A 1 1 0 0 0 4.3691406 26.927734 L 7 26 L 5.5 24.5 L 4 23 z"/>
+                    </svg>
+                </i>
+                </p>
+
+                
+            </div>
+            <div class="card-body">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="tab-eg1-0" role="tabpanel">
+                        <p>{{ ocorrencia.descricao }}<p>
+                    </div>
+                </div>
+            </div>
+    </div>
+</div>
+<div>
+    <div class="col-sm-12 col-lg-12">
+        <div class="main-card mb-3 card">
+            <div class="card-header">
+                <p style="font-size: 1.5rem;">Envolvidos
+                    <i>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="#000000" viewBox="0 0 30 30" width="20px" height="20px">
+                        <path d="M 22.828125 3 C 22.316375 3 21.804562 3.1954375 21.414062 3.5859375 L 19 6 L 24 11 L 26.414062 8.5859375 C 27.195062 7.8049375 27.195062 6.5388125 26.414062 5.7578125 L 24.242188 3.5859375 C 23.851688 3.1954375 23.339875 3 22.828125 3 z M 17 8 L 5.2597656 19.740234 C 5.2597656 19.740234 6.1775313 19.658 6.5195312 20 C 6.8615312 20.342 6.58 22.58 7 23 C 7.42 23.42 9.6438906 23.124359 9.9628906 23.443359 C 10.281891 23.762359 10.259766 24.740234 10.259766 24.740234 L 22 13 L 17 8 z M 4 23 L 3.0566406 25.671875 A 1 1 0 0 0 3 26 A 1 1 0 0 0 4 27 A 1 1 0 0 0 4.328125 26.943359 A 1 1 0 0 0 4.3378906 26.939453 L 4.3632812 26.931641 A 1 1 0 0 0 4.3691406 26.927734 L 7 26 L 5.5 24.5 L 4 23 z"/>
+                    </svg>
+                </i>
+                </p>
+
+                
+            </div>
+            <div class="card-body">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="tab-eg1-0" role="tabpanel">
+                        <p>{{ ocorrencia.envolvidoNome }}<p>
+                    </div>
+                </div>
+            </div>
+    </div>
+</div>
+
+<div>
+    <div class="col-sm-12 col-lg-12">
+        <div class="main-card mb-3 card">
+            <div class="card-header">
+                <p style="font-size: 1.5rem;">Anexos
+                    <i>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="#000000" viewBox="0 0 30 30" width="20px" height="20px">
+                        <path d="M 22.828125 3 C 22.316375 3 21.804562 3.1954375 21.414062 3.5859375 L 19 6 L 24 11 L 26.414062 8.5859375 C 27.195062 7.8049375 27.195062 6.5388125 26.414062 5.7578125 L 24.242188 3.5859375 C 23.851688 3.1954375 23.339875 3 22.828125 3 z M 17 8 L 5.2597656 19.740234 C 5.2597656 19.740234 6.1775313 19.658 6.5195312 20 C 6.8615312 20.342 6.58 22.58 7 23 C 7.42 23.42 9.6438906 23.124359 9.9628906 23.443359 C 10.281891 23.762359 10.259766 24.740234 10.259766 24.740234 L 22 13 L 17 8 z M 4 23 L 3.0566406 25.671875 A 1 1 0 0 0 3 26 A 1 1 0 0 0 4 27 A 1 1 0 0 0 4.328125 26.943359 A 1 1 0 0 0 4.3378906 26.939453 L 4.3632812 26.931641 A 1 1 0 0 0 4.3691406 26.927734 L 7 26 L 5.5 24.5 L 4 23 z"/>
+                    </svg>
+                </i>
+                </p>
+
+                
+            </div>
+            <div class="card-body">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="tab-eg1-0" role="tabpanel">
+                        <p>{{ ocorrencia.imagem }}<p>
+                    </div>
+                </div>
+            </div>
+    </div>
+</div>
+
+
+<div class=".container">
+    <div class="col-sm-12 col-lg-12">
         <a class="btn btn-primary" href="{% url 'list_ocorrencia' %}">Voltar</a>
+        <a href="{% url 'upd_ocorrencia' ocorrencia.id %}" class="btn-wide btn btn-success">Editar</a>
     </div>
-    {% bootstrap_javascript jquery='full' %}
+</div>
+{% bootstrap_javascript jquery='full' %}
 {% endblock %}

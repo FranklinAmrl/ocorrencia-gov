@@ -1,34 +1,53 @@
 {% extends 'base.html' %}
 {% load bootstrap4 %}
 {% block content %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js" ></script>
     <div class="row">
         <h1>Ocorrências</h1>
-        <table class="table table-striped">
+        <table class="table table-hover table-striped">
             <thead>
                 <tr>
                     <th scope="col">ID</th>
                     <th scope="col">Tipo</th>
                     <th scope="col">Data</th>
                     <th scope="col">Centro</th>
-                    <th scope="col">Ação</th>
+                    <th scope="col">Status</th>
                 </tr>
             </thead>
             <tbody>
+                
                 {% for ocorrencia in page_obj %}
-                    <tr>
-                        <a href="{% url 'det_ocorrencia' ocorrencia.id %}" ></a>
+                <tr class='clickable-row' data-href="{% url 'det_ocorrencia' ocorrencia.id %}">
                         <td>{{ ocorrencia.id }}</td>
                         <td>{{ ocorrencia.get_tipo_display }}</td>
                         <td>{{ ocorrencia.data }}</td>
                         <td>{{ ocorrencia.get_centro_display }}</td>
-                        <td>
-                            <a class="btn btn-success" href="{% url 'det_ocorrencia' ocorrencia.id %}">Ver</a>
-                            <a class="btn btn-primary" href="{% url 'upd_ocorrencia' ocorrencia.id %}">Editar</a>
-                        </td>
+                        <td>Ativo</td>
+
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
+
+        <script>
+            jQuery(document).ready(function($) {
+                $(".clickable-row").click(function() {
+                    window.location = $(this).data("href");
+                });
+            });
+        </script>
+
+        <style>
+            .clickable-row {
+                cursor: pointer;
+            }
+            
+            .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+                background-color: #a52a2a;
+              }
+
+            
+        </style>
 
         {% include 'paginacao.html' %}
 

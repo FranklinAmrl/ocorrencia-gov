@@ -8,38 +8,41 @@
     <title>Ocorrencias</title>
 </head>
 <body>
-    <div class=".container">
-        <div style="background-color: brown; height: 5rem; align-items: center;" class="row justify-content-center">
-            <ul class="nav justify-content-center">
-                <li class="nav-item">
-                  <a style="color: white;" class="nav-link active" aria-current="page" href="{% url 'list_ocorrencia' %}">Ocorrencia</a>
-                </li>
-                <li class="nav-item">
-                  <a style="color: white;" class="nav-link" href="{% url 'list_usuario' %}">Usuário</a>
-                </li>
-                <li class="nav-item">
-                  <a style="color: white;" class="nav-link" href="{% url 'relatorio' %}">Relatório</a>
-                </li>
-                <li class="nav-item">
-                    <a class="btn btn-primary" href="{% url 'add_ocorrencia' %}">Cadastrar nova ocorrência</a>
-                </li>
-                <li class="nav-item">
-                    <a style="color: white;" class="nav-link" href="{% url 'estatistica' %}">Estátistica</a>
-                </li>
-                <li class="nav-item">
-                    <a style="color: white;" class="nav-link" href="{% url 'list_passagem_plantao' %}">Passagem de Plantão</a>
-                </li>
-                <li class="nav-item">
-                    <a style="color: white;" class="nav-link" href="#">Configuração</a>
-                </li>
-              </ul>
+    <div>
+        <div class=".container">
+            <div style="background-color: #840d1a; height: 5rem; align-items: center;" class="row justify-content-center">
+                <ul class="nav justify-content-center">
+                    <li class="nav-item">
+                      <a style="color: white;" class="nav-link active" aria-current="page" href="{% url 'list_ocorrencia' %}">Ocorrencia</a>
+                    </li>
+                    <li class="nav-item">
+                      <a style="color: white;" class="nav-link" href="{% url 'list_usuario' %}">Usuário</a>
+                    </li>
+                    <li class="nav-item">
+                      <a style="color: white;" class="nav-link" href="{% url 'relatorio' %}">Relatório</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-primary" href="{% url 'add_ocorrencia' %}">Cadastrar nova ocorrência</a>
+                    </li>
+                    <li class="nav-item">
+                        <a style="color: white;" class="nav-link" href="{% url 'estatistica' %}">Estátistica</a>
+                    </li>
+                    <li class="nav-item">
+                        <a style="color: white;" class="nav-link" href="{% url 'list_passagem_plantao' %}">Passagem de Plantão</a>
+                    </li>
+                    <li class="nav-item">
+                        <a style="color: white;" class="nav-link" href="#">Configuração</a>
+                    </li>
+                  </ul>
+            </div>
+        </div>
+    
+    
+        <div class="container">
+            {%  block content %} {% endblock %}
         </div>
     </div>
-
-
-    <div class="container">
-        {%  block content %} {% endblock %}
-    </div>
+    
 {% bootstrap_javascript jquery='full' %}
 </body>
 </html> 
