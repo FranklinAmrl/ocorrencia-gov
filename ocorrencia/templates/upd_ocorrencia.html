@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% block content %}
+<h1>Editar a ocorrência</h1>
+    <form action="" method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+                <button type="submit" class="btn btn-success">Salvar</button>
+                <button type="submit" class="btn btn-warning">
+                    <a href="{% url 'list_ocorrencia' %}">Cancelar</a>
+                </button>
+
+        </form>
+{% bootstrap_javascript jquery='full' %}
+{% endblock %}

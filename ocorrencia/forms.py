@@ -99,3 +99,5 @@ class CreateOcorrenciaForm(forms.ModelForm):
             'descricao' : forms.Textarea(
                 attrs={'class': 'form-control'})
         }
+
+

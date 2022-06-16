@@ -10,7 +10,7 @@
         <div class="main-card mb-4 card">
             <div style="font-size: 1.5rem;" class="card-header"><p>Local</p>
             </div>
-            <div class="card-body">
+            <div style="height:400px;" class="card-body">
                 <div class="tab-content">
                     <div class="tab-pane active" id="tab-eg1-0" role="tabpanel">
                         <p>DEIXAR MAPA GOOGLE 
@@ -27,7 +27,7 @@
         <div class="main-card mb-4 card">
             <div style="font-size: 1.5rem;" class="card-header"><p>Informações do local</p>
             </div>
-            <div class="card-body">
+            <div style="height:400px;" class="card-body">
                 <div class="tab-content">
                     <div class="tab-pane active" id="tab-eg1-0" role="tabpanel">
                         <p>{{ ocorrencia.data }}<p>
@@ -38,7 +38,7 @@
             </div>
     </div>
 </div>
-<div>
+<div style="width:71.25rem;">
     <div class="col-sm-12 col-lg-12">
         <div class="main-card mb-3 card">
             <div class="card-header">
@@ -109,11 +109,15 @@
     </div>
 </div>
 
+<style>
+</style>
+
 
 <div class=".container">
     <div class="col-sm-12 col-lg-12">
         <a class="btn btn-primary" href="{% url 'list_ocorrencia' %}">Voltar</a>
         <a href="{% url 'upd_ocorrencia' ocorrencia.id %}" class="btn-wide btn btn-success">Editar</a>
+        <a href="{% url 'upd_ocorrencia2' ocorrencia.id %}" class="btn-wide btn btn-success">Editar2</a>
     </div>
 </div>
 {% bootstrap_javascript jquery='full' %}
