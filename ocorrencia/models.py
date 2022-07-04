@@ -73,49 +73,49 @@ class PassagemPlatao(Base):
         return self.data
 
 
-class UsuarioManager(BaseUserManager):
+# class UsuarioManager(BaseUserManager):
 
-    use_in_migrations = True
+#     use_in_migrations = True
 
-    def _create_user(self, cpf, password, **extra_fields):
-        if not cpf:
-            raise ValueError('O email é obrigatório.')
-        cpf = self.normalize_email(cpf)
-        user = self.model(cpf=cpf, username=cpf, **extra_fields)
-        user.set_password(password)
-        user.save(using=self._db)
+#     def _create_user(self, cpf, password, **extra_fields):
+#         if not cpf:
+#             raise ValueError('O email é obrigatório.')
+#         cpf = self.normalize_email(cpf)
+#         user = self.model(cpf=cpf, username=cpf, **extra_fields)
+#         user.set_password(password)
+#         user.save(using=self._db)
 
-        return user
+#         return user
 
-    '''def create_user(self, email, password=None, **extra_fields):
-        extra_fields.setdefault('is_staff', False)
-        extra_fields.setdefault('is_superuser', False)
+#     '''def create_user(self, email, password=None, **extra_fields):
+#         extra_fields.setdefault('is_staff', False)
+#         extra_fields.setdefault('is_superuser', False)
 
-        return self._create_user(email, password, **extra_fields)'''
+#         return self._create_user(email, password, **extra_fields)'''
 
-    def create_staffuser(self, cpf, password=None, **extra_fields):
-        extra_fields.setdefault('is_staff', True)
-        extra_fields.setdefault('is_superuser', False)
+#     def create_staffuser(self, cpf, password=None, **extra_fields):
+#         extra_fields.setdefault('is_staff', True)
+#         extra_fields.setdefault('is_superuser', False)
 
-        if extra_fields.get('is_staff') is not True:
-            raise ValueError('O usuário precisa de ter is_staff=True')
+#         if extra_fields.get('is_staff') is not True:
+#             raise ValueError('O usuário precisa de ter is_staff=True')
 
-        return self._create_user(cpf, password, **extra_fields)
+#         return self._create_user(cpf, password, **extra_fields)
 
-    def create_superuser(self, cpf, password=None, **extra_fields):
-        extra_fields.setdefault('is_superuser', True)
-        extra_fields.setdefault('is_staff', True)
+#     def create_superuser(self, cpf, password=None, **extra_fields):
+#         extra_fields.setdefault('is_superuser', True)
+#         extra_fields.setdefault('is_staff', True)
 
-        if extra_fields.get('is_superuser') is not True:
-            raise ValueError('O usuário precisa de ter is_superuser=True')
+#         if extra_fields.get('is_superuser') is not True:
+#             raise ValueError('O usuário precisa de ter is_superuser=True')
 
-        if extra_fields.get('is_staff') is not True:
-            raise ValueError('O usuário precisa de ter is_staff=True')
+#         if extra_fields.get('is_staff') is not True:
+#             raise ValueError('O usuário precisa de ter is_staff=True')
 
-        return self._create_user(cpf, password, **extra_fields)
+#         return self._create_user(cpf, password, **extra_fields)
 
 class User(AbstractUser):
-    status = models.PositiveSmallIntegerField(choices = StatusUsuarioChoices.choices, default=StatusUsuarioChoices.ATIVO)
+    status = models.PositiveSmallIntegerField(choices = StatusUsuarioChoices.choices, default=StatusUsuarioChoices.NOT_VERIFIED)
     username = models.CharField('CPF', max_length=11, unique=True)
     email = models.EmailField('Email', unique=True)
 

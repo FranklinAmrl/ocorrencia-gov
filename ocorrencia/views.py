@@ -14,7 +14,8 @@ from django.urls import reverse_lazy
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from ocorrencia.forms import CreateOcorrenciaForm, LoginUsuarioForm, FiltroRelatorioOcorrencia
+from ocorrencia.forms import CreateOcorrenciaForm, LoginForm, LoginUsuarioForm, FiltroRelatorioOcorrencia
+from ocorrencia.utils import get_descendants_users
 from .models import Usuario, Ocorrencia, PassagemPlatao
 from django.contrib.auth import authenticate,login,logout
 from django.contrib import messages
@@ -132,14 +133,39 @@ class CreatePassagemPlantaoView(LoginRequiredClass,CreateView):
     fields = '__all__'
     success_url = reverse_lazy('list_passagem_plantao')
 
-class ListUsuarioView(LoginRequiredClass,ListView):
-    model = Usuario
-    template_name = 'list_usuario.html'
-    paginate_by = 10
-    queryset = Usuario.objects.all()
-    context_object_name = 'Usuario'
-  
+# class ListUsuarioView(LoginRequiredClass,View):
+#     model = Usuario.objects.all()
+#     template_name = 'list_usuario.html'
+#     paginate_by = 10
+#     queryset = Usuario.objects.all()
+#     context_object_name = 'usuarios'
+#     form = LoginForm
 
+#     def get(self,request):
+#         form = self.form()
+#         msg = None
+#         users = self.model
+#         return render(request,self.template_name, {
+#             "form": form, 
+#         "msg": msg,
+#         'context_object_name':self.context_object_name,
+#         'users':users})
+
+class ListUsuarioView(LoginRequiredMixin,View):
+    template_name = "list_usuario.html"
+    form = LoginForm
+    success_url = "/"
+    segment = 'users'
+    def get(self,request):
+        form = self.form()
+        msg = None
+        users = get_descendants_users(request.user)
+        return render(request,self.template_name, {
+            "form": form, 
+        "msg": msg,
+        'segment':self.segment,
+        'users':users})
+  
 class TemplateEstatisticaView(LoginRequiredClass,TemplateView):
     template_name = 'estatistica.html'
 

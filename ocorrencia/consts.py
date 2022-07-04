@@ -10,6 +10,7 @@ class TipoUsuarioChoices(IntegerChoices):
 class StatusUsuarioChoices(IntegerChoices):
     ATIVO = 1, 'Ativo'
     INATIVO = 2, 'Inativo'
+    NOT_VERIFIED = 3, 'Não Verificado'
 
 class TipoOcorrenciaChoices(IntegerChoices):
     AGRESSAO = 1, 'Agressão'

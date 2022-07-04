@@ -100,4 +100,18 @@ class CreateOcorrenciaForm(forms.ModelForm):
                 attrs={'class': 'form-control'})
         }
 
-
+class LoginForm(forms.Form):
+    username = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                "placeholder": "Nome de Usuário",
+                "class": "form-control"
+            }
+        ))
+    password = forms.CharField(
+        widget=forms.PasswordInput(
+            attrs={
+                "placeholder": "Senha",
+                "class": "form-control"
+            }
+        ))
