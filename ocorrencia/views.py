@@ -153,11 +153,11 @@ class CreatePassagemPlantaoView(LoginRequiredClass,CreateView):
 
 class ListUsuarioView(LoginRequiredMixin,View):
     template_name = "list_usuario.html"
-    form = LoginForm
+    form = CreateManagementUserForm
     success_url = "/"
     segment = 'users'
     def get(self,request):
-        form = self.form()
+        form = CreateManagementUserForm
         msg = None
         users = get_descendants_users(request.user)
         return render(request,self.template_name, {

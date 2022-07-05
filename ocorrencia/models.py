@@ -90,9 +90,9 @@ class Management(User,MPTTModel):
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None):
         if not self.id:
-            if self.perfil == ManagementTypeChoices.ADMINISTRATOR:
+            if self.office == ManagementTypeChoices.ADMINISTRATOR:
                 super().save(force_insert, force_update, using, update_fields)
-            elif self.parent and self.perfil > self.parent.perfil:
+            elif self.parent and self.office > self.parent.office:
                 super().save(force_insert, force_update, using, update_fields)
         else:
             super().save(force_insert, force_update, using, update_fields)

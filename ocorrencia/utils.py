@@ -6,7 +6,7 @@ def get_descendants_users(user,NOTIFICANTE_filter=False):
     logged_user = Management.objects.filter(user_ptr = user).first()
     if logged_user:
         users = logged_user.get_descendants()
-    elif not User.objects.filter(user_ptr = user).exists():
+    elif not Management.objects.filter(user_ptr = user).exists():
         users = Management.objects.all()
     else:
         users = Management.objects.none()
