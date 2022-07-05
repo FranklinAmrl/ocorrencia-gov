@@ -16,7 +16,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 from ocorrencia.forms import CreateManagementUserForm, CreateOcorrenciaForm, LoginForm, LoginUsuarioForm, FiltroRelatorioOcorrencia
 from ocorrencia.utils import get_descendants_users
-from .models import User, Ocorrencia, PassagemPlatao
+from .models import Management, User, Ocorrencia, PassagemPlatao
 from django.contrib.auth import authenticate,login,logout
 from django.contrib import messages
 from datetime import datetime
@@ -31,7 +31,7 @@ from reportlab.lib.units import inch
 
 class LoginUsuarioView(FormView):
     form_class = LoginUsuarioForm
-    template_name = "login.html"
+    template_name = "accounts/login.html"
     success_url = '/list-ocorrencia'
     def post(self,request, *args, **kwargs):
         classe = super().post(request, *args, **kwargs)
@@ -170,8 +170,6 @@ class TemplateEstatisticaView(LoginRequiredClass,TemplateView):
     template_name = 'estatistica.html'
 
 class DadosJSONView(BaseLineChartView):
-
-    
 
     def get_labels(self):
         labels = [

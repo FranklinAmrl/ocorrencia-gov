@@ -1,0 +1,84 @@
+{% extends 'base-fullscreen.html' %} 
+{% block title %} Login {% endblock title %} 
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %} 
+{% block content %} 
+    <!-- Page content -->
+    <div class="header  py-8 py-lg-8"> 
+    </div>
+    <div class="container mt--8 pb-5">
+      <div class="row justify-content-center">
+        <div style="padding-top: 10rem;" class="col-lg-5 col-md-7">
+          <div class="card border " style="align-items: center;background: #f8f9fa; height:30rem; width: 25rem;box-shadow:1px 1px 10px #66666e"> 
+            <br/><br/>
+            <h3 class=" text-center" style="font-weight:500; color: #840d1a;" >
+              Ocorrencia Gov
+            </h3> 
+            <div class="card-body px-lg-5 py-lg-5">
+              <div class="text-center text-muted mb-1">
+
+                {% if msg %}
+                  <p>{{ msg }}</p>
+                {% else %}
+                {% endif %}  
+
+              </div>
+
+              <form method="POST">
+
+                {% csrf_token %}
+
+                <div class="form-group mb-3">
+                  <div class="input-group input-group-alternative">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text"><i class="ni ni-single-02"></i></span>
+                    </div>
+                    {{ form.username }}
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="input-group input-group-alternative">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>
+                    </div>
+                    {{ form.password }}
+                  </div>
+                </div>
+                <div class="custom-control custom-control-alternative custom-checkbox">
+                  <input class="custom-control-input" id=" customCheckLogin" type="checkbox"checked>
+                  <label class="custom-control-label" for=" customCheckLogin">
+                    <span style="color: grey;">Lembrar senha</span>
+                  </label>
+                </div>
+                <div class="text-center">
+                  <button style="border-color: #840d1a; background-color: #840d1a;color: white;" type="submit" class="btn btn-primary my-4">ENTRAR</button>
+                </div>
+              </form>
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-6">
+              {% comment %} <a href="{% url 'register' %}" class="text-light"><small>Register</small></a> {% endcomment %}
+            </div>
+            <div class="col-6 text-right">
+              {% comment %} <a href="https://appseed.us/support" class="text-light"><small>Get Support</small></a> {% endcomment %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="py-5 text-center  "style="color: #f8f9fa;">   <a target="_blank">2022 &copy; Central de Atendimento ao Cidadão</a> 
+    </footer>
+
+    <style>
+      .custom-control-input:checked~.custom-control-label::before {
+        color: #fff;
+        border-color: #840d1a;
+        background-color: #840d1a;
+    }
+    </style>
+{% endblock content %}
+
+<!-- Specific JS goes HERE --> 
+{% block javascripts %}{% endblock javascripts %}
