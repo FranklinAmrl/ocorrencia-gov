@@ -1,0 +1,86 @@
+{% extends 'base.html' %} 
+{% block title %} Dashboard 
+{% endblock title%} 
+{% block stylesheets %}{% endblock stylesheets %} {% block content %}
+<div class="header   pb-6">
+  <div class="container-fluid">
+    <div class="header-body"> 
+      <div class="header  py-5 py-lg-5"> 
+        <h2>Usuários</h2>
+      </div> 
+    </div>
+  </div>
+</div> 
+<div class="container-fluid mt--6" style="background: #f2f2f2;">
+  <div class="row">
+    <div class="col">
+      <div class="card">
+        <div class="card-header border-0">
+          <div class="row align-items-center"> 
+            <!--<div class="col">
+              <form class="navbar-search navbar-search-light form-inline mr-sm-3" id="navbar-search-main">
+                <div class="form-group mb-5">
+                  <div class="input-group input-group-alternative input-group-merge">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text"><i class="fas fa-search"></i></span>
+                    </div>
+                    <input class="form-control" placeholder="Pesquisar" type="text">
+                  </div>
+                </div>
+              </form>
+              <div class="form-group mb-5">
+                <div class="col text-right">
+                  <a href="/users/create/" class="btn btn-sm btn-secondary">Novo Usuário</a>
+                </div>
+              </div>
+            </div>-->
+            <form class="col form-inline">
+              <input class="form-control mr-sm-2" type="search" placeholder="Pesquisar..." aria-label="Search">
+              <!--<button class="btn btn-outline-primary my-2 my-sm-0" type="submit">+</button>-->
+            </form>  
+            <div class="col  text-right"> 
+              <a href="/users/create/"class="btn btn-outline-primary">Cadastrar Usuário</a>
+            </div>
+          </div>
+        </div>
+        <div class="table-responsive"> 
+          <table class="table align-items-center table-flush">
+            <thead class="thead-light">
+              <tr>
+                <th scope="col">Login</th>
+                <th scope="col">Nome</th>
+                <th scope="col">Email</th>
+                <th scope="col">Cargo</th>
+                <th scope="col">Status</th>
+                <th scope="col">Gestor</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for user in users %}
+              <tr>
+                <th scope="row">{{user.username}}</th>
+                <td scope="row">{{user.first_name}}</td>
+                <td scope="row">{{user.email}}</td>
+                <td scope="row">{{user.get_office_display}}</td>
+                <td scope="row">{{user.get_status_display}}</td>
+                <td scope="row">
+                  {% if user.parent%}
+                    {{user.parent.first_name}}
+                  {%endif%}
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div> 
+  </div> 
+</div> 
+{% endblock content %} 
+{% block javascripts %}
+
+<script src="/static/assets/vendor/chart.js/dist/Chart.min.js"></script>
+<script src="/static/assets/vendor/chart.js/dist/Chart.extension.js"></script>
+
+{% endblock javascripts %}

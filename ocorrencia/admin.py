@@ -1,11 +1,10 @@
-from ast import Pass
 from django.contrib import admin
 
 from django.contrib.auth.admin import UserAdmin
 
-from .models import Ocorrencia, PassagemPlatao, User, Usuario
+from .models import Management, Ocorrencia, PassagemPlatao, User
 
-from .forms import UsuarioCreateForm, UsuarioChangeForm
+from .forms import CreateManagementUserForm
 
 @admin.register(Ocorrencia)
 class OcorrenciaAdmin(admin.ModelAdmin):
@@ -17,8 +16,7 @@ class PassagemPlantaoAdmin(admin.ModelAdmin):
 
 @admin.register(User)
 class UsuarioAdmin(UserAdmin):
-    add_form = UsuarioCreateForm
-    form = UsuarioChangeForm
+    add_form = CreateManagementUserForm
     model = User
     list_display = ('first_name', 'last_name', 'email', 'is_staff')
     fieldsets = (
