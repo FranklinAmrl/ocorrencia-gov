@@ -1,0 +1,82 @@
+{% extends 'base.html' %} 
+{% block title %} Dashboard 
+{% endblock title%} 
+{% block stylesheets %}{% endblock stylesheets %} {% block content %} 
+<div class="card-body px-lg-5 py-lg-5">
+  <div class="text-center text-muted mb-4"> 
+    {% if msg %}
+      <small>{{ msg | safe }}</small>
+    {% else %}
+    <div class="text-center py-4 py-lg-4"> 
+      <h2>Cadastrar usuário</h2>
+    </div>
+    {% endif %}   
+  </div>  
+  {% if not success %} 
+    <form method="POST"> 
+      {% csrf_token %}   
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="form-group">
+            <label class="form-control-label" >Login</label> 
+            {{ form.username }}   
+          </div>
+          <span class="text-error">{{ form.username.errors }}</span>
+        </div>
+        <div class="col-lg-12">
+          <div class="form-group">
+            <label class="form-control-label" >Nome</label>
+            {{ form.first_name }}
+          </div>
+          <span class="text-error">{{ form.first_name.errors }}</span>
+        </div>
+        <div class="col-lg-12">
+          <div class="form-group">
+            <label class="form-control-label" >Cargo</label>
+            {{ form.office }}
+          </div>
+          <span class="text-error">{{ form.office.errors }}</span>
+        </div>
+        <div class="col-lg-12">
+          <div class="form-group">
+            <label class="form-control-label" >Gestor</label>
+            {{ form.parent }}
+          </div>
+          <span class="text-error">{{ form.parent.errors }}</span>
+        </div>
+        <div class="col-lg-12">
+          <div class="form-group">
+            <label class="form-control-label" >Email</label>
+            {{ form.email }}
+          </div>
+          <span class="text-error">{{ form.email.errors }}</span>
+        </div>
+        <div class="col-lg-12">
+          <div class="form-group">
+            <label class="form-control-label" >Senha</label>
+            {{ form.password }}
+          </div>
+          <span class="text-error">{{ form.password.errors }}</span>
+        </div>
+        <div class="col-lg-12">
+          <div class="form-group">
+            <label class="form-control-label" >Repetir Senha</label>
+            {{ form.password2 }}
+          </div>
+          <span class="text-error">{{ form.password2.errors }}</span>
+        </div>
+      </div>    
+      <div class="text-center">
+        <a href="{% url 'list_usuario' %}" class="btn btn-outline-dark mt-4">CANCELAR</a>
+        <button type="submit" class="btn btn-primary mt-4">CADASTRAR</button>
+      </div> 
+    </form> 
+  {% endif %}   
+</div>
+<div class="container-fluid mt--6">
+</div> 
+{% endblock content %}  
+{% block javascripts %} 
+<script src="/static/assets/vendor/chart.js/dist/Chart.min.js"></script>
+<script src="/static/assets/vendor/chart.js/dist/Chart.extension.js"></script> 
+{% endblock javascripts %}
