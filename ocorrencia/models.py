@@ -2,11 +2,10 @@ import uuid
 from django.db import models
 from stdimage.models import StdImageField
 from mptt.models import MPTTModel
-#from django.contrib.auth import get_user_model
 
-from django.contrib.auth.models import AbstractUser, BaseUserManager
+from django.contrib.auth.models import AbstractUser
 
-from ocorrencia.consts import StatusUsuarioChoices, TipoCentroChoices, TipoEnvolvidoChoices, TipoGeneroChoices, TipoUsuarioChoices, TipoOcorrenciaChoices
+from ocorrencia.consts import GenreChoices, ManagementTypeChoices, StatusUsuarioChoices, TipoCentroChoices, TipoEnvolvidoChoices, TipoGeneroChoices, ManagementTypeChoices, TipoOcorrenciaChoices
 
 class Base(models.Model):
     criado = models.DateField('Data de criação', auto_now_add=True)
@@ -71,75 +70,37 @@ class PassagemPlatao(Base):
 
     def __str__(self):
         return self.data
-
-
-# class UsuarioManager(BaseUserManager):
-
-#     use_in_migrations = True
-
-#     def _create_user(self, cpf, password, **extra_fields):
-#         if not cpf:
-#             raise ValueError('O email é obrigatório.')
-#         cpf = self.normalize_email(cpf)
-#         user = self.model(cpf=cpf, username=cpf, **extra_fields)
-#         user.set_password(password)
-#         user.save(using=self._db)
-
-#         return user
-
-#     '''def create_user(self, email, password=None, **extra_fields):
-#         extra_fields.setdefault('is_staff', False)
-#         extra_fields.setdefault('is_superuser', False)
-
-#         return self._create_user(email, password, **extra_fields)'''
-
-#     def create_staffuser(self, cpf, password=None, **extra_fields):
-#         extra_fields.setdefault('is_staff', True)
-#         extra_fields.setdefault('is_superuser', False)
-
-#         if extra_fields.get('is_staff') is not True:
-#             raise ValueError('O usuário precisa de ter is_staff=True')
-
-#         return self._create_user(cpf, password, **extra_fields)
-
-#     def create_superuser(self, cpf, password=None, **extra_fields):
-#         extra_fields.setdefault('is_superuser', True)
-#         extra_fields.setdefault('is_staff', True)
-
-#         if extra_fields.get('is_superuser') is not True:
-#             raise ValueError('O usuário precisa de ter is_superuser=True')
-
-#         if extra_fields.get('is_staff') is not True:
-#             raise ValueError('O usuário precisa de ter is_staff=True')
-
-#         return self._create_user(cpf, password, **extra_fields)
-
 class User(AbstractUser):
-    status = models.PositiveSmallIntegerField(choices = StatusUsuarioChoices.choices, default=StatusUsuarioChoices.NOT_VERIFIED)
-    username = models.CharField('CPF', max_length=11, unique=True)
-    email = models.EmailField('Email', unique=True)
 
+    token_reset_password = models.CharField(max_length=200, blank=True, null=True)
+    token_data = models.DateTimeField(blank=True ,null=True)
+    status = models.PositiveSmallIntegerField(choices = StatusUsuarioChoices.choices, default=StatusUsuarioChoices.NOT_VERIFIED)
+    #genre = models.PositiveSmallIntegerField(choices=GenreChoices.choices)
+    #profile_picture = models.ImageField(null=True, blank=True, upload_to=get_file_path)
     class Meta:
         ordering = ['first_name']
+        verbose_name = "Usuário"
+        verbose_name_plural = "Usuários"
 
-class Usuario(User,MPTTModel):
-    fone = models.CharField('Telefone', max_length=15)
-    perfil = models.PositiveSmallIntegerField(choices = TipoUsuarioChoices.choices)
-    parent = models.ForeignKey('Usuario', null=True, blank=True, on_delete=models.PROTECT)
+class Management(User,MPTTModel):
+
+    parent = models.ForeignKey('Management', null=True, blank=True, on_delete=models.PROTECT)
+    office = models.PositiveSmallIntegerField(choices = ManagementTypeChoices.choices)
     
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None):
         if not self.id:
-            if self.perfil == TipoUsuarioChoices.ADMINISTRATOR:
+            if self.perfil == ManagementTypeChoices.ADMINISTRATOR:
                 super().save(force_insert, force_update, using, update_fields)
             elif self.parent and self.perfil > self.parent.perfil:
                 super().save(force_insert, force_update, using, update_fields)
         else:
             super().save(force_insert, force_update, using, update_fields)
 
+    # def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
+    # ## todo usuário Mangement será ativo na criação ##
+    # self.status = StatusUserChoices.ACTIVE
+    # return super().save(force_insert, force_update, using, update_fields)
 
     class MPTTMeta:
         order_insertion_by = ['first_name']
-
-    def __str__(self):
-        return f'Login do usuário: {self.cpf}'
