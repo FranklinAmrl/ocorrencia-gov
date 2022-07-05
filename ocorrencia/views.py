@@ -14,9 +14,9 @@ from django.urls import reverse_lazy
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from ocorrencia.forms import CreateOcorrenciaForm, LoginForm, LoginUsuarioForm, FiltroRelatorioOcorrencia
+from ocorrencia.forms import CreateManagementUserForm, CreateOcorrenciaForm, LoginForm, LoginUsuarioForm, FiltroRelatorioOcorrencia
 from ocorrencia.utils import get_descendants_users
-from .models import Usuario, Ocorrencia, PassagemPlatao
+from .models import User, Ocorrencia, PassagemPlatao
 from django.contrib.auth import authenticate,login,logout
 from django.contrib import messages
 from datetime import datetime
@@ -217,8 +217,6 @@ class TemplateRelatorioView(LoginRequiredMixin, View):
     @staticmethod
     def relatorio_csv(request):
 
-        id = 'csv'
-
         ocorrencias = Ocorrencia.objects.all()
 
         response = HttpResponse(content_type='text/csv')
@@ -278,3 +276,32 @@ class TemplateRelatorioView(LoginRequiredMixin, View):
 
 
         return FileResponse(buffer, as_attachment=True, filename='hello.pdf')
+
+
+class CreateManagementUserView(LoginRequiredMixin,FormView):
+    template_name = "create_user.html"
+    success_url = "/list-usuario/"
+    success_message = "Usuario criado com sucesso!"
+    login_url = "/login/"
+    form_class = CreateManagementUserForm
+
+
+    def form_valid(self, form):
+        form.save()
+        return redirect(self.success_url,)
+
+
+class UsersView(LoginRequiredMixin,View):
+    template_name = "users.html"
+    form = LoginForm
+    success_url = "/"
+    segment = 'users'
+    def get(self,request):
+        form = self.form()
+        msg = None
+        users = get_descendants_users(request.user)
+        return render(request,self.template_name, {
+            "form": form, 
+        "msg": msg,
+        'segment':self.segment,
+        'users':users})
