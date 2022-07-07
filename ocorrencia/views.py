@@ -1,6 +1,7 @@
 from ast import Pass
 from base64 import decode
 from dataclasses import dataclass
+from urllib import request
 from django.shortcuts import redirect, render
 from django.views.generic import ListView
 from django.views.generic import TemplateView
@@ -169,27 +170,32 @@ class ListUsuarioView(LoginRequiredMixin,View):
 class TemplateEstatisticaView(LoginRequiredClass,TemplateView):
     template_name = 'estatistica.html'
 
-class DadosJSONView(BaseLineChartView):
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["qs"] = Ocorrencia.objects.all()
+        return context
 
-    def get_labels(self):
-        labels = [
-            "Ano 2022",
-        ]
+# class DadosJSONView(BaseLineChartView):
 
-        return labels
+#     def get_labels(self):
+#         labels = [
+#             "Ano 2022",
+#         ]
 
-    def get_providers(self):
+#         return labels
 
-        datasets = Ocorrencia.get_qtd_tipo_ocorrencia().keys()
+#     def get_providers(self):
 
-        return datasets
+#         datasets = Ocorrencia.get_qtd_tipo_ocorrencia().keys()
 
-    def get_data(self):
+#         return datasets
+
+#     def get_data(self):
         
-        dados = Ocorrencia.get_qtd_tipo_ocorrencia()
+#         dados = Ocorrencia.get_qtd_tipo_ocorrencia()
         
 
-        return dados
+#         return dados
 
 class TemplateRelatorioView(LoginRequiredMixin, View):
     model = Ocorrencia

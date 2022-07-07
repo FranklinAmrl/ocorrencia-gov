@@ -2,7 +2,7 @@ from django import views
 from django.urls import path
 
 
-from .views import CreateManagementUserView, DetailPassagemView, ListOcorrenciaView, CreateOcorrenciaView, LoginUsuarioView, UpdateOcorrenciaView, DetailOcorrenciaView, ListPassagemPlantaoView, CreatePassagemPlantaoView, ListUsuarioView, DadosJSONView, TemplateEstatisticaView, TemplateRelatorioView, UsersView, post
+from .views import CreateManagementUserView, DetailPassagemView, ListOcorrenciaView,  LoginUsuarioView, UpdateOcorrenciaView, DetailOcorrenciaView, ListPassagemPlantaoView, CreatePassagemPlantaoView, ListUsuarioView, TemplateEstatisticaView, TemplateRelatorioView, UsersView, post
 
 from .views import logout_view, update_ocorrencia
 
@@ -26,5 +26,5 @@ urlpatterns = [
    # path('relatorio-csv/', TemplateRelatorioView.relatorio_csv().as_view(), name='relatorio_csv'),
    # path('relatorio-pdf/', TemplateRelatorioView.relatorio_pdf().as_view(), name='relatorio_pdf'),
     path('estatistica', TemplateEstatisticaView.as_view(), name='estatistica'),
-    path('dados/', DadosJSONView.as_view(), name='dados'),
+    #path('dados/', DadosJSONView.as_view(), name='dados'),
 ]
