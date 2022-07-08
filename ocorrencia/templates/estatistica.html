@@ -19,12 +19,13 @@
 $(document).ready(function(){
   const ctx = document.getElementById('myChart').getContext('2d');
   const myChart = new Chart(ctx, {
-      type: 'bar',
+      type: 'pie',
       data: {
-          labels: [{% for item in qs %}'{{item.get_tipo_display}}',{% endfor %}],
-          datasets: [{
-              label: [{% for item in qs %}'{{item.get_tipo_display}}',{% endfor %}],
-              data: [{% for item in qs %}'{{ item.centro }}',{% endfor %}],
+          labels: [{% for label in labels %}'{{ label }}',{% endfor %}],
+          datasets: [
+            {
+              label: [{% for d in data %}'{{d.label}}',{% endfor %}],
+              data: [{% for d in data %}{{d.qtd}},{% endfor %}],
               backgroundColor: [
                   'rgba(255, 99, 132, 0.2)',
                   'rgba(54, 162, 235, 0.2)',
@@ -42,7 +43,8 @@ $(document).ready(function(){
                   'rgba(255, 159, 64, 1)'
               ],
               borderWidth: 1
-          }]
+          }   
+          ]
       },
       options: {
           scales: {

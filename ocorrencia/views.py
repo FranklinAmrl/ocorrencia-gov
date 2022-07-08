@@ -14,9 +14,10 @@ from django.views import View
 from django.urls import reverse_lazy
 
 from django.contrib.auth.mixins import LoginRequiredMixin
+from ocorrencia.consts import TipoOcorrenciaChoices
 
 from ocorrencia.forms import CreateManagementUserForm, CreateOcorrenciaForm, LoginForm, LoginUsuarioForm, FiltroRelatorioOcorrencia
-from ocorrencia.utils import get_descendants_users
+from ocorrencia.utils import get_descendants_users, get_qtd_tipo_ocorrencia
 from .models import Management, User, Ocorrencia, PassagemPlatao
 from django.contrib.auth import authenticate,login,logout
 from django.contrib import messages
@@ -169,10 +170,32 @@ class ListUsuarioView(LoginRequiredMixin,View):
   
 class TemplateEstatisticaView(LoginRequiredClass,TemplateView):
     template_name = 'estatistica.html'
+    
+    @staticmethod
+    def get_chart_data(queryset=None):
+        data = []
+        labels = []
+        tipos = TipoOcorrenciaChoices.choices
+        if not queryset:
+            queryset = Ocorrencia.objects.all()
+        for tipo,nome in tipos:
+            qtd = queryset.filter(tipo=tipo).count()
+            d = {
+                'qtd':qtd,
+                'label':nome
+            }
+            labels.append(nome)
+            data.append(d)
+        return data,labels
+
 
     def get_context_data(self, **kwargs):
+        
         context = super().get_context_data(**kwargs)
-        context["qs"] = Ocorrencia.objects.all()
+        data,labels = self.get_chart_data()
+        context['data'] = data
+        context['labels'] = labels
+        print(labels)
         return context
 
 # class DadosJSONView(BaseLineChartView):
